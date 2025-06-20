@@ -47,3 +47,7 @@
     background-color: #1a2233;
     border-color: #747bff;
 }
+
+.terminal-button:focus {
+    outline: none;
+}
