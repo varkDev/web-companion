@@ -1,6 +1,10 @@
 import './card.css'
+import defaultPicture from '../../assets/profile/default.jpg';
 
 function Card({imageSrc, name, description}) {
+    if (!imageSrc){
+        imageSrc = defaultPicture;
+    }
     return (
         <div className="card-container">
             <div className="card">

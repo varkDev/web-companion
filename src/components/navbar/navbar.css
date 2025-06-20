@@ -1,0 +1,37 @@
+.card-navbar {
+    display: flex;
+    align-items: center;
+    background-color: #181c29;
+    padding: 10px 15px;
+}
+
+.card-navbar li{
+    float:left;
+}
+
+.card-navbar img {
+    height: 50px;
+    width: 50px;
+}
+
+.card-navbar ul{
+    display: flex;
+    list-style-type: none;
+    background-color: #181c29;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+}
+
+.card-navbar a{
+    color: #a3f7bf;
+    text-decoration: none;
+    padding: 15px;
+    display:block;
+    text-align: center;
+}
+
+.card-navbar a:hover{
+    color:#ccfbd9;
+    text-shadow: shadow 15px;
+}

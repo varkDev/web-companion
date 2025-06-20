@@ -1,11 +1,12 @@
-import Card from './components/card/card'
-import profilePic from './assets/picture.jpg'
+import Card from './components/card/card.jsx'
+import Navbar from './components/navbar/navbar.jsx'
 
 function App() {
 
   return (
     <>
-      <Card imageSrc={profilePic} name="Vark" description="Lolz"/>
+      <Navbar/>
+      <Card imageSrc="" name="Vark" description="Lolz"/>
     </>
   )
 }
