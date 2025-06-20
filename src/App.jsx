@@ -1,5 +1,5 @@
 import Navbar from './components/navbar/navbar.jsx'
-import { Home, NotFound } from './pages'
+import { Home, Register, NotFound } from './pages'
 import { Routes, Route, Outlet } from 'react-router-dom'
 
 function Layout() {
@@ -19,6 +19,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/home" element= {<Home/>} />
+          <Route path="/register" element={<Register />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
