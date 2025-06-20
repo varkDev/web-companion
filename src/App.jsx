@@ -1,14 +1,26 @@
 import Navbar from './components/navbar/navbar.jsx'
-import { Home } from './pages'
-import { Routes, Route } from 'react-router-dom'
+import { Home, NotFound } from './pages'
+import { Routes, Route, Outlet } from 'react-router-dom'
+
+function Layout() {
+  return (
+    <>
+      <Navbar />
+      <Outlet/>
+    </>
+  )
+}
 
 function App() {
 
   return (
     <>
-      <Navbar/>
       <Routes>
-        <Route path="/home" element= {<Home/>} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element= {<Home/>} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   )

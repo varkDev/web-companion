@@ -1,0 +1,49 @@
+.terminal-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+.terminal-window {
+    background: #0f131a;
+    border-radius: 6px;
+    padding: 24px 32px;
+    box-shadow: 0 0 10px #1a2a3a80;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+.terminal-text {
+    color: #a3f7bf;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.incorrect-path {
+    color: #f76c6c;
+    text-shadow: #f76c6c 0px 0px 10px;
+}   
+
+.terminal-button {
+    background: #1a2a3a;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+
+    width: 100%;
+    margin-top: 15px;
+
+    transition: color 0.3s ease-in-out, 
+                background-color 0.3s ease-in-out, 
+                border-color 0.3s ease-in-out;
+}
+
+.terminal-button:hover {
+    color: #a3f7bf;
+    background-color: #1a2233;
+    border-color: #747bff;
+}
