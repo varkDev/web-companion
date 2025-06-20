@@ -1,14 +1,17 @@
-import Card from './components/card/card.jsx'
-import Navbar from './components/navbar/navbar.jsx'
+import { Navbar } from './components/navbar/navbar.jsx'
+import { Home } from './pages'
+import { Routes, Route } from 'react-router-dom'
 
 function App() {
 
   return (
     <>
       <Navbar/>
-      <Card imageSrc="" name="Vark" description="Lolz"/>
+      <Routes>
+        <Route path="/home" element= {<Home/>} />
+      </Routes>
     </>
   )
-}
+} 
 
 export default App

@@ -1,16 +1,19 @@
 import './navbar.css'
 import logo from '../../assets/logo/web_companion_tr.png'
+import { Link } from 'react-router-dom'
 
-function Navbar(){
-    return(
+function Navbar() {
+    return (
         <nav className="card-navbar">
-            <img class="img" src={logo} alt="Logo"/>
+            <Link to="/home">
+                <img className="img" src={logo} alt="Logo" />
+            </Link>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Register</a></li>
+                <li><Link to="/home" className="navbar-items">Home</Link></li>
+                <li><Link to="/login" className="navbar-items">Login</Link></li>
+                <li><Link to="/register" className="navbar-items">Register</Link></li>
             </ul>
-        </nav>  
+        </nav>
     );
 }
 

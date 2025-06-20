@@ -23,7 +23,7 @@
     overflow: hidden;
 }
 
-.card-navbar a{
+.card-navbar .navbar-items{
     color: #a3f7bf;
     text-decoration: none;
     padding: 15px;
