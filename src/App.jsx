@@ -1,4 +1,4 @@
-import { Navbar } from './components/navbar/navbar.jsx'
+import Navbar from './components/navbar/navbar.jsx'
 import { Home } from './pages'
 import { Routes, Route } from 'react-router-dom'
 
