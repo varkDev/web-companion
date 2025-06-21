@@ -2,7 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { use } from 'react';
 
 dotenv.config();
 
@@ -33,6 +32,7 @@ const userSchema = new mongoose.Schema({
   date_created: { type: String, default: () => new Date().toISOString() },
   reset_token: String,
 });
+
 const User = mongoose.model('User', userSchema);
 
 //Route to save a user
@@ -52,6 +52,24 @@ app.get('/api/users/check-email', async (req, res) => {
   if (!email) return res.status(400).json({ exists: false, message: 'Email is required' });
   const user = await User.findOne({ email });
   res.json({ exists: !!user })
+});
+
+//Username required and Username exists
+app.get('/api/users/check-username', async (req, res) => {
+  const { username } = req.query;
+  if (!username) return res.status(400).json({ exists: false, message: 'Username is required' });
+  const user = await User.findOne({ username });
+  res.json({ exists: !!user })
+});
+
+//To log a user in
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (!user || user.password !== password) {
+    return res.status(401).json({ error: 'Invalid email or password' });
+  }
+  res.json({ message: 'Login successful', user });
 });
 
 // Example route

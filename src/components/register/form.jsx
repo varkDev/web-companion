@@ -1,8 +1,9 @@
+import { checkEmailExists, checkUsernameExists, registerUser, loginUser } from '../../api/userApi';
 import './form.css'
 import { useState, useEffect } from 'react'
 import createEmptyUser from '../../models/user.js'
 
-function Form(){
+function RegisterForm(){
 
   const [typed, setTyped] = useState('')
   const [user, setUser] = useState(createEmptyUser());
@@ -32,38 +33,34 @@ function Form(){
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const usernameExists = await checkUsernameExists(user.username);
+    if (usernameExists) {
+      setError('Username already exists');
+      return;
+    }
+
     const emailExists = await checkEmailExists(user.email);
     if (emailExists) {
       setError('Email already exists');
       return;
-    }
+    } 
 
     try {
-      const response = await fetch('http://localhost:5000/api/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-      });
+      const response = await registerUser(user);
       if (response.ok) {
         const savedUser = await response.json();
         console.log('User registered:', savedUser);
         setUser(createEmptyUser());
+        setError('');
       } else {
         const error = await response.json();
-        console.error('Registration failed:', error);
+        setError('Registration failed: ' + (error.error || 'Unknown error'));
       }
     } catch (err) {
-      console.error('Network error:', err);
+      setError('Network error: ' + err.message);
     }
+    
   };
-
-  const checkEmailExists = async (email) => {
-    const response = await fetch('http://localhost:5000/api/users/check-email?email=' + encodeURIComponent(email));
-    const data = await response.json();
-    return data.exists;
-  }
 
   return (
         <div className="register-form">
@@ -110,4 +107,4 @@ function Form(){
     )
 }
 
-export default Form;
+export default RegisterForm;

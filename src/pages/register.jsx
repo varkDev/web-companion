@@ -1,9 +1,9 @@
-import Form from '../components/register/form.jsx';
+import RegisterForm from '../components/register/form.jsx';
 
 function Register() {
     return(
       <div className="register-container">
-        <Form />
+        <RegisterForm />
       </div>
     )
 }
