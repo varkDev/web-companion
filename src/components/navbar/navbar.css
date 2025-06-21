@@ -50,5 +50,6 @@
     background-color: #181c29;
     color: red;
     border: none;
+    outline: none;
     cursor: pointer;
 }
