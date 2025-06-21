@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -37,13 +39,19 @@ const User = mongoose.model('User', userSchema);
 
 //Route to save a user
 app.post('/api/users', async (req, res) => {
-    try{
-        const user = new User(req.body);
-        await user.save();
-        res.status(201).json(user);
-      } catch (error) {
-        res.status(400).json({error: error.message});
-      }  
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const user = new User({ ...req.body, password: hashedPassword });
+    await user.save();
+    // Fetch the full user (excluding password)
+    const userToSend = await User.findById(user._id).select('-password');
+    // Create JWT token for the new user
+    const payload = { id: user._id, email: user.email, username: user.username };
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+    res.status(201).json({ user: userToSend, token });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
 
 //Email required and Email exists
@@ -63,13 +71,43 @@ app.get('/api/users/check-username', async (req, res) => {
 });
 
 //To log a user in
+const JWT_SECRET = process.env.JWT_SECRET || 'jwt_secret_key';
+
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  if (!user || user.password !== password) {
+  if (!user) {
     return res.status(401).json({ error: 'Invalid email or password' });
   }
-  res.json({ message: 'Login successful', user });
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(401).json({ error: 'Invalid email or password' });
+  }
+  const payload = { id: user._id, email: user.email, username: user.username };
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+  res.json({ message: 'Login successful', token, user: payload });
+});
+
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.sendStatus(401);
+  
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
+
+app.get('/api/protected', authenticateToken, (req, res) => {
+  res.json({ message: 'This is protected', user: req.user });
+});
+
+app.get('/api/me', authenticateToken, async (req, res) => {
+  const user = await User.findById(req.user.id).select('-password');
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  res.json(user);
 });
 
 // Example route

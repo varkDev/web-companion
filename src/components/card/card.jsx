@@ -5,6 +5,12 @@ function Card({imageSrc, name, description}) {
     if (!imageSrc){
         imageSrc = defaultPicture;
     }
+    if (!name) {
+        name = "Anonymous";
+    }
+    if (!description) {
+        description = "No description available.";
+    }
     return (
         <div className="card-container">
             <div className="card">

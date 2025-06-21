@@ -2,9 +2,10 @@ import { checkEmailExists, checkUsernameExists, registerUser, loginUser } from '
 import './form.css'
 import { useState, useEffect } from 'react'
 import createEmptyUser from '../../models/user.js'
+import { useNavigate } from 'react-router-dom'
 
 function RegisterForm(){
-
+  const navigate = useNavigate();
   const [typed, setTyped] = useState('')
   const [user, setUser] = useState(createEmptyUser());
   const [error, setError] = useState('');
@@ -48,10 +49,10 @@ function RegisterForm(){
     try {
       const response = await registerUser(user);
       if (response.ok) {
-        const savedUser = await response.json();
-        console.log('User registered:', savedUser);
-        setUser(createEmptyUser());
-        setError('');
+        const data = await response.json();
+        localStorage.setItem('token', data.token); // Store JWT token
+        localStorage.setItem('user', JSON.stringify(data.user)); // (optional) Store user info
+        navigate('/home');
       } else {
         const error = await response.json();
         setError('Registration failed: ' + (error.error || 'Unknown error'));

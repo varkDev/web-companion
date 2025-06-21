@@ -27,3 +27,18 @@ export const loginUser = async (credentials) => {
   });
   return response;
 };
+
+export function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.href = '/login';
+}
+
+export const fetchMe = async () => {
+  const token = localStorage.getItem('token');
+  const response = await fetch('http://localhost:5000/api/me', {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  if (!response.ok) throw new Error('Not authenticated');
+  return await response.json();
+};

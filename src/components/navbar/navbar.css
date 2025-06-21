@@ -1,8 +1,16 @@
 .card-navbar {
+    width: 100vw;
+    height: 60px;
+    background: #181c29;
     display: flex;
     align-items: center;
-    background-color: #181c29;
-    padding: 10px 15px;
+    justify-content: space-between;
+    position: fixed; /* Fixes navbar to the top */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 0 10px;
+    box-sizing: border-box;
 }
 
 .card-navbar li{
@@ -12,6 +20,8 @@
 .card-navbar img {
     height: 50px;
     width: 50px;
+    display: block;
+    align-self: center;
 }
 
 .card-navbar ul{
@@ -34,4 +44,11 @@
 .card-navbar a:hover{
     color:#ccfbd9;
     text-shadow: shadow 15px;
+}
+
+.navbar-items.logout-button {
+    background-color: #181c29;
+    color: red;
+    border: none;
+    cursor: pointer;
 }

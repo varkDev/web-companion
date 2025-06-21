@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { loginUser } from '../../api/userApi';
+import { useNavigate } from 'react-router-dom';
 import './form.css';
 
 function LoginForm() {
+  const navigate = useNavigate();
   const [user, setUser] = useState({ email: '', password: '' });
   const [typed, setTyped] = useState('')
   const [error, setError] = useState('');
@@ -34,7 +36,9 @@ function LoginForm() {
       const response = await loginUser(user);
       if (response.ok) {
         const data = await response.json();
+        localStorage.setItem('token', data.token); // Store JWT token to localStorage
         setSuccess('Login successful!');
+        navigate('/home'); // Redirect to home page or dashboard  
         setError('');
         // Optionally: save user info/token, redirect, etc.
         console.log('Logged in:', data.user);

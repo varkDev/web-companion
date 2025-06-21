@@ -23,7 +23,6 @@
     transition: 0.15s ease-in-out;
 
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-    user-select: none;
 }
 
 .login-form {
