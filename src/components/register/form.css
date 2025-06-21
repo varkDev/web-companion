@@ -96,3 +96,9 @@
 .register-button:focus {
     outline: none;
 }
+
+.register-error {
+  color: red;
+  margin-bottom: 1rem;
+  text-align: center;
+}

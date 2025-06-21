@@ -5,6 +5,8 @@ import createEmptyUser from '../../models/user.js'
 function Form(){
 
   const [typed, setTyped] = useState('')
+  const [user, setUser] = useState(createEmptyUser());
+  const [error, setError] = useState('');
 
   const title = "Register"
 
@@ -19,8 +21,6 @@ function Form(){
     return () => clearInterval(interval)
   }, [title])
 
-  const [user, setUser] = useState(createEmptyUser());
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser(prev => ({
@@ -29,16 +29,47 @@ function Form(){
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('User registered:', user);
-    setUser(createEmptyUser());
+
+    const emailExists = await checkEmailExists(user.email);
+    if (emailExists) {
+      setError('Email already exists');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+      });
+      if (response.ok) {
+        const savedUser = await response.json();
+        console.log('User registered:', savedUser);
+        setUser(createEmptyUser());
+      } else {
+        const error = await response.json();
+        console.error('Registration failed:', error);
+      }
+    } catch (err) {
+      console.error('Network error:', err);
+    }
+  };
+
+  const checkEmailExists = async (email) => {
+    const response = await fetch('http://localhost:5000/api/users/check-email?email=' + encodeURIComponent(email));
+    const data = await response.json();
+    return data.exists;
   }
 
   return (
         <div className="register-form">
           <div className="register-card">
             <h1 className="register-title">{typed}</h1>
+            {error && <div className="register-error">{error}</div>}
             <form className="register-inputs" onSubmit={handleSubmit}>
                 
                 <label className="register-label">Username</label>
