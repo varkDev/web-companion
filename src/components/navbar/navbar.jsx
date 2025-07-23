@@ -36,6 +36,7 @@ function Navbar() {
                 {!isLoggedIn && <li><Link to="/register" className="navbar-items">Register</Link></li>}
                 {isLoggedIn && <li><button className="navbar-items logout-button" onClick={handleLogout}>Logout</button></li>}
                 <li><Link to="/home" className="navbar-items">Home</Link></li>
+                {isLoggedIn && <li><Link to="/settings" className="navbar-items"><i className="fa fa-gear"></i></Link></li>}
             </ul>
         </nav>
     );
