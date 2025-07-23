@@ -34,6 +34,19 @@ export function logout() {
   window.location.href = '/login';
 }
 
+export const updateUser = async (user) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch('http://localhost:5000/api/me', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(user)
+  });
+  return response;
+}
+
 export const fetchMe = async () => {
   const token = localStorage.getItem('token');
   const response = await fetch('http://localhost:5000/api/me', {

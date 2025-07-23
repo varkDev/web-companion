@@ -104,15 +104,40 @@ app.get('/api/protected', authenticateToken, (req, res) => {
   res.json({ message: 'This is protected', user: req.user });
 });
 
+
 app.get('/api/me', authenticateToken, async (req, res) => {
   const user = await User.findById(req.user.id).select('-password');
   if (!user) return res.status(404).json({ error: 'User not found' });
   res.json(user);
 });
 
+// Update current user profile
+app.put('/api/me', authenticateToken, async (req, res) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { $set: req.body },
+      { new: true }
+    ).select('-password');
+    if (!updatedUser) return res.status(404).json({ error: 'User not found' });
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 // Example route
 app.get('/', (req, res) => {
   res.send('API is running');
+});
+
+app.use('/api', (req, res) => {
+  res.status(404).json({ error: 'API route not found' });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: err.message || 'Server error' });
 });
 
 // Start server

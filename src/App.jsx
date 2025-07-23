@@ -1,5 +1,5 @@
 import Navbar from './components/navbar/navbar.jsx'
-import { Home, RegisterForm, Login, NotFound } from './pages'
+import { Home, RegisterForm, Login, NotFound, SettingsForm } from './pages'
 import { Routes, Route, Outlet } from 'react-router-dom'
 
 function Layout() {
@@ -21,6 +21,7 @@ function App() {
           <Route path="/home" element= {<Home/>} />
           <Route path="/login" element={<Login />} />          
           <Route path="/register" element={<RegisterForm />} />
+          <Route path="/settings" element={<SettingsForm />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

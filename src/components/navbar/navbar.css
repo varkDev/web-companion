@@ -53,3 +53,13 @@
     outline: none;
     cursor: pointer;
 }
+
+.navbar-items .fa-gear:hover {
+    animation: spin-gear 1.5s linear infinite;
+}
+
+@keyframes spin-gear {
+    100% {
+        transform: rotate(360deg);
+    }
+}
