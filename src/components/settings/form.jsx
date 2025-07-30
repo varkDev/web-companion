@@ -29,14 +29,12 @@ function SettingsForm() {
       setError('Only .png and .jpg files are allowed');
       return;
     }
-    // Show preview immediately
     const reader = new FileReader();
     reader.onload = (ev) => {
       setUser(prev => ({ ...prev, profile_picture: ev.target.result }));
       setError('');
     };
     reader.readAsDataURL(file);
-    // TODO: You may want to upload the file to the server here
   };
 
   useEffect(() => {
@@ -84,6 +82,17 @@ function SettingsForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const socialPlatforms = ['twitter', 'github', 'linkedin'];
+    for (const platform of socialPlatforms) {
+      const url = user.social_links?.[platform] || '';
+      if (!isValidSocialUrl(platform, url)) {
+        setError(`Invalid URL for ${platform}`);
+        setSuccess('');
+        return;
+      }
+    }
+
     try {
       const response = await updateUser(user);
       if (response.ok) {
@@ -104,6 +113,27 @@ function SettingsForm() {
   const isChanged = (field, nested = false) => {
     if (!nested) return user[field] !== initialUser[field];
     return (user.social_links?.[field] || '') !== (initialUser.social_links?.[field] || '');
+  };
+
+  const isValidSocialUrl = (platform, url) => {
+    if (!url) return true;
+    try {
+      const parsed = new URL(url);
+      const domain = parsed.hostname.toLowerCase();
+      
+      switch (platform) {
+        case "twitter":
+          return domain === "twitter.com" || domain.endsWith(".twitter.com");
+        case "github":  
+          return domain === "github.com" || domain.endsWith(".github.com");
+        case "linkedin":
+          return domain === "linkedin.com" || domain.endsWith(".linkedin.com");
+        default:
+          return true;
+      }
+    } catch {
+      return false;
+    }
   };
 
   return (

@@ -11,7 +11,7 @@
     background-color:#181c29;
     border-radius: 10px;
     width: 700px;
-    height: 500px;
+    height: 600px;
 
     display:flex;
     flex-direction: column;
@@ -57,5 +57,14 @@
     color: black;
     margin: 0px;
     font-size: 1.2rem;
+    color: #a3f7bf;
+}
+
+.card-terminal-buttons {
+
+}
+
+.card-terminal-buttons .inner-button {
+    background-color: #1a1f28;
     color: #a3f7bf;
 }
